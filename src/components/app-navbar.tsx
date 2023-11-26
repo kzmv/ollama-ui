@@ -1,5 +1,6 @@
 "use client";
 
+import { DEFAULT_URL } from "@/app/constants";
 import { ChatOllama } from "langchain/chat_models/ollama";
 import { useEffect, useRef, useState } from "react";
 
@@ -61,7 +62,7 @@ export default function AppNavbar({
     console.log(i, activeModel, availableModels);
     setActiveModel(availableModels[i].name);
     const newOllama = new ChatOllama({
-      baseUrl: "http://localhost:11434",
+      baseUrl: DEFAULT_URL,
       model: availableModels[i]?.name,
     });
     //store in local storage

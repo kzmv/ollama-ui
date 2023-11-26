@@ -5,7 +5,7 @@ const { exec } = require("child_process");
 
 export async function POST(request: NextRequest) {
   let x = ""
-  exec("ls -la", (error, stdout, stderr) => {
+  exec("ls -la", (error: Error, stdout: any, stderr: any) => {
       if (error) {
           console.log(`error: ${error.message}`);
           return;

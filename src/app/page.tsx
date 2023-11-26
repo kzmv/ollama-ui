@@ -20,6 +20,7 @@ import { AppModal, useModal } from "./context/ModalContext";
 import { usePrompts } from "./context/PromptContext";
 import CommandTextInput from "@/components/command-text-input";
 import Sidebar from "@/components/sidebar";
+import { DEFAULT_URL } from "./constants";
 
 export default function Home() {
   const { setModalConfig } = useModal();
@@ -45,6 +46,7 @@ export default function Home() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const msgContainerRef = useRef<HTMLDivElement>(null);
 
+
   useEffect(() => {
     scrollToBottom();
   }, [activeConversation]);
@@ -58,7 +60,7 @@ export default function Home() {
   }, []);
 
   function getInitialModel() {
-    fetch("http://localhost:11434/api/tags")
+    fetch(`${DEFAULT_URL}/api/tags`)
       .then((response) => response.json())
       .then((data) => {
         // console.log(data);
@@ -76,7 +78,7 @@ export default function Home() {
         ) {
           setActiveModel(storedModel);
           const newOllama = new ChatOllama({
-            baseUrl: "http://localhost:11434",
+            baseUrl: `${DEFAULT_URL}`,
             model: storedModel,
           });
           setOllama(newOllama);
@@ -84,7 +86,7 @@ export default function Home() {
           // set initial model to first model in list
           setActiveModel(data.models[0]?.name);
           const initOllama = new ChatOllama({
-            baseUrl: "http://localhost:11434",
+            baseUrl: `${DEFAULT_URL}`,
             model: data.models[0]?.name,
           });
           setOllama(initOllama);
@@ -286,7 +288,7 @@ export default function Home() {
 
   function getName(input: string) {
     const nameOllama = new ChatOllama({
-      baseUrl: "http://localhost:11434",
+      baseUrl: `${DEFAULT_URL}`,
       model: "llama2",
       verbose: false,
     });
@@ -323,10 +325,10 @@ export default function Home() {
           setOllama={setOllama}
         />
         <div className="flex w-full flex-1 flex-shrink flex-col items-center justify-end gap-y-4 overflow-hidden whitespace-break-spaces">
-          <div className="flex w-full flex-1 flex-col items-center justify-end gap-y-4 overflow-scroll whitespace-break-spaces">
+          <div className="flex w-full flex-1 flex-col items-center justify-end gap-y-4 overflow-auto whitespace-break-spaces">
             <div
               ref={msgContainerRef}
-              className="block h-fit w-full flex-col items-center justify-center gap-y-1 overflow-scroll rounded-md p-2"
+              className="block h-fit w-full flex-col items-center justify-center gap-y-1 overflow-hidden rounded-md p-2"
             >
               {messages.map((msg) => (
                 <div
